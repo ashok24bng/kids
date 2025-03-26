@@ -72,6 +72,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            width: 100%;
         }
         
         .header-container {
@@ -155,15 +156,16 @@
             
             nav {
                 position: fixed;
-                top: 0;
+                top: 70px;
                 right: -100%;
-                width: 80%;
+                width: 100%;
                 max-width: 300px;
-                height: 100vh;
+                height: calc(100vh - 70px);
                 background-color: white;
                 box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-                padding: 80px 30px 30px;
+                padding: 30px;
                 overflow-y: auto;
+                transition: right 0.3s ease;
             }
             
             nav.active {
@@ -180,6 +182,8 @@
             
             nav ul li a {
                 font-size: 1.1rem;
+                display: block;
+                padding: 10px 0;
             }
             
             /* Animate hamburger to X when menu is open */
@@ -987,7 +991,7 @@
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <td><a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
@@ -1041,13 +1045,6 @@
             menuToggle.addEventListener('click', function() {
                 this.classList.toggle('active');
                 mainNav.classList.toggle('active');
-                
-                // Toggle body overflow when menu is open
-                if (mainNav.classList.contains('active')) {
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    document.body.style.overflow = '';
-                }
             });
             
             // Close menu when clicking on a link
@@ -1056,7 +1053,6 @@
                 link.addEventListener('click', function() {
                     menuToggle.classList.remove('active');
                     mainNav.classList.remove('active');
-                    document.body.style.overflow = '';
                 });
             });
             
