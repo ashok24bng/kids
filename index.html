@@ -34,6 +34,10 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
             color: var(--dark);
@@ -754,11 +758,11 @@
             
             <nav id="main-nav">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">How It Works</a></li>
-                    <li><a href="#">Winners</a></li>
-                    <li><a href="#">Prizes</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#winners">Winners</a></li>
+                    <li><a href="#prizes">Prizes</a></li>
                     <li><a href="#" class="btn">Participate Now</a></li>
                 </ul>
             </nav>
@@ -766,19 +770,19 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="container">
             <h1>India's Favorite Kids Activity Contest</h1>
             <p>Showcase your little one's cuteness and win amazing prizes every month! Free entry for children aged 0-10 years.</p>
             <div class="btn-group">
                 <a href="#" class="btn">Participate Now</a>
-                <a href="#" class="btn btn-secondary">View Winners</a>
+                <a href="#winners" class="btn btn-secondary">View Winners</a>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features">
+    <section class="features" id="about">
         <div class="container">
             <div class="section-title">
                 <h2>Why Choose votemykid?</h2>
@@ -838,7 +842,7 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="how-it-works">
+    <section class="how-it-works" id="how-it-works">
         <div class="container">
             <div class="section-title">
                 <h2>How It Works</h2>
@@ -868,7 +872,7 @@
     </section>
 
     <!-- Winners Section -->
-    <section class="winners">
+    <section class="winners" id="winners">
         <div class="container">
             <div class="section-title">
                 <h2>Our Recent Winners</h2>
@@ -933,7 +937,7 @@
     </section>
 
     <!-- Prizes Section -->
-    <section class="prizes">
+    <section class="prizes" id="prizes">
         <div class="container">
             <div class="section-title">
                 <h2>March 2025 Prize Details</h2>
@@ -991,7 +995,7 @@
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
-                        <td><a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
@@ -999,21 +1003,21 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
                         <li><a href="#how-it-works">How It Works</a></li>
                         <li><a href="#">Contest Rules</a></li>
                         <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Prize Details</a></li>
+                        <li><a href="#prizes">Prize Details</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
                     <h3>Winners</h3>
                     <ul>
-                        <li><a href="#">Previous Winners</a></li>
+                        <li><a href="#winners">Previous Winners</a></li>
                         <li><a href="#">Result Section</a></li>
-                        <li><a href="#">Winners Gallery</a></li>
+                        <li><a href="#winners">Winners Gallery</a></li>
                         <li><a href="#">Entry Removal</a></li>
                         <li><a href="#">Entry Correction</a></li>
                         <li><a href="#">Participate Now</a></li>
@@ -1059,11 +1063,22 @@
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
+                    // Skip if it's a # link with no specific target
+                    if(this.getAttribute('href') === '#') {
+                        return;
+                    }
+                    
                     e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
+                    const targetId = this.getAttribute('href');
+                    const target = document.querySelector(targetId);
+                    
                     if (target) {
+                        // Calculate the scroll position, accounting for fixed header
+                        const headerHeight = document.querySelector('header').offsetHeight;
+                        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                        
                         window.scrollTo({
-                            top: target.offsetTop - 80,
+                            top: targetPosition,
                             behavior: 'smooth'
                         });
                     }
@@ -1072,8 +1087,4 @@
         });
     </script>
 </body>
-
-html {
-    scroll-behavior: smooth;
-}
-
+</html>
