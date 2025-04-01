@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register / Login</title>
+    <title>Register page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,6 +21,8 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .tab {
             display: flex;
@@ -84,11 +86,6 @@
             <button onclick="switchTab('login')">Login</button>
         </div>
 
-
-
-
-
-        
         <div id="register-form">
             <div class="form-group">
                 <label>Kid's Name</label>
