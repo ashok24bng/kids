@@ -151,6 +151,16 @@
         nav ul li a:hover:after {
             width: 100%;
         }
+
+        /* Current page indicator */
+        nav ul li a.current-page {
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+        
+        nav ul li a.current-page:after {
+            width: 100%;
+        }
         
         /* Mobile Navigation */
         @media (max-width: 768px) {
@@ -746,7 +756,9 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <img src="https://www.cutebabyvote.com/wp-content/uploads/2022/03/cute-baby-vote-photo-contest-logo.png" alt="votemykid Logo">
+                <a href="index.html">
+                    <img src="https://www.cutebabyvote.com/wp-content/uploads/2022/03/cute-baby-vote-photo-contest-logo.png" alt="votemykid Logo">
+                </a>
             </div>
             
             <!-- Mobile Menu Toggle -->
@@ -758,12 +770,12 @@
             
             <nav id="main-nav">
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#winners">Winners</a></li>
-                    <li><a href="#prizes">Prizes</a></li>
-                    <li><a href="#" class="btn">Participate Now</a></li>
+                    <li><a href="index.html" class="current-page">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#winners">Winners</a></li>
+                    <li><a href="index.html#prizes">Prizes</a></li>
+                    <li><a href="register.html" class="btn">Participate Now</a></li>
                 </ul>
             </nav>
         </div>
@@ -775,7 +787,7 @@
             <h1>India's Favorite Kids Activity Contest</h1>
             <p>Showcase your little one's cuteness and win amazing prizes every month! Free entry for children aged 0-10 years.</p>
             <div class="btn-group">
-                <a href="#" class="btn">Participate Now</a>
+                <a href="register.html" class="btn">Participate Now</a>
                 <a href="#winners" class="btn btn-secondary">View Winners</a>
             </div>
         </div>
@@ -932,7 +944,7 @@
         <div class="container">
             <h2>Ready to Showcase Your Little Star?</h2>
             <p>Join thousands of happy parents celebrating their children's cuteness with votemykid</p>
-            <a href="#" class="btn">Participate Now - It's Free!</a>
+            <a href="register.html" class="btn">Participate Now - It's Free!</a>
         </div>
     </section>
 
@@ -1003,24 +1015,24 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
                         <li><a href="#">Contest Rules</a></li>
                         <li><a href="#">FAQ</a></li>
-                        <li><a href="#prizes">Prize Details</a></li>
+                        <li><a href="index.html#prizes">Prize Details</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
                     <h3>Winners</h3>
                     <ul>
-                        <li><a href="#winners">Previous Winners</a></li>
+                        <li><a href="index.html#winners">Previous Winners</a></li>
                         <li><a href="#">Result Section</a></li>
-                        <li><a href="#winners">Winners Gallery</a></li>
+                        <li><a href="index.html#winners">Winners Gallery</a></li>
                         <li><a href="#">Entry Removal</a></li>
                         <li><a href="#">Entry Correction</a></li>
-                        <li><a href="#">Participate Now</a></li>
+                        <li><a href="register.html">Participate Now</a></li>
                     </ul>
                 </div>
                 
@@ -1058,6 +1070,18 @@
                     menuToggle.classList.remove('active');
                     mainNav.classList.remove('active');
                 });
+            });
+            
+            // Highlight current page in navigation
+            const currentPage = location.pathname.split('/').pop() || 'index.html';
+            const navLinksAll = document.querySelectorAll('#main-nav a');
+            
+            navLinksAll.forEach(link => {
+                const linkPage = link.getAttribute('href').split('/').pop();
+                if (currentPage === linkPage || 
+                    (currentPage === 'index.html' && (linkPage === undefined || linkPage === 'index.html'))) {
+                    link.classList.add('current-page');
+                }
             });
             
             // Smooth scrolling for anchor links
