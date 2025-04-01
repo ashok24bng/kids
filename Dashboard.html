@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .logout-btn {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .logout-btn:hover {
+            background: #e64a19;
+        }
+        .student-profile {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 30px;
+            border: 5px solid #ff5722;
+        }
+        .student-info {
+            flex: 1;
+        }
+        .student-info h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .info-item {
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .participation-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .section-title {
+            margin-top: 0;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .participate-btn {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+        .participate-btn:hover {
+            background: #e64a19;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .history-table th, .history-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .history-table th {
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .history-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        .photo-cell {
+            width: 120px;
+        }
+        .contest-photo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid #eee;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .close-btn:hover {
+            color: #333;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: #ff5722;
+        }
+        .payment-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .payment-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .payment-btn:hover {
+            background: #3e8e41;
+        }
+        .voting-link {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            background: #0b7dda;
+        }
+        .vote-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff5722;
+            margin-top: 10px;
+        }
+        .no-participation {
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>Student Dashboard</h1>
+            <button class="logout-btn">Logout</button>
+        </div>
+
+        <div class="student-profile">
+            <img src="https://via.placeholder.com/150" alt="Student Photo" class="profile-pic">
+            <div class="student-info">
+                <h2>Rahul Sharma</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Age:</span> 8 years
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">School:</span> Sunshine Public School
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">City:</span> Mumbai
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Parent:</span> Mr. Amit Sharma
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Last Participation:</span> 15 Jan 2023
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Best Rank:</span> #12
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="participation-section">
+            <h2 class="section-title">Current Participation</h2>
+            <button class="participate-btn" id="participateBtn">Participate Now</button>
+            
+            <div id="currentParticipation" style="display: none;">
+                <div class="voting-link">
+                    <strong>Voting Link:</strong> 
+                    <span id="voteLink"></span>
+                    <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+                </div>
+                <div class="vote-count">
+                    Total Votes: <span id="voteCount">0</span>
+                </div>
+                <p>Voting ends in: <span id="countdown"></span></p>
+                <div class="photo-preview" style="margin-top: 20px;">
+                    <h3>Your Contest Photo:</h3>
+                    <img id="currentContestPhoto" class="contest-photo" src="" alt="Current Contest Photo">
+                </div>
+            </div>
+            
+            <div id="noCurrentParticipation" class="no-participation">
+                No current participation. Click "Participate Now" to enter the contest.
+            </div>
+        </div>
+
+        <div class="participation-section">
+            <h2 class="section-title">Participation History</h2>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Contest</th>
+                        <th class="photo-cell">Photo</th>
+                        <th>Rank</th>
+                        <th>Votes</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>15 Jan 2023</td>
+                        <td>Winter Wonderland</td>
+                        <td class="photo-cell"><img class="contest-photo" src="https://via.placeholder.com/100?text=Winter" alt="Contest Photo"></td>
+                        <td>#12</td>
+                        <td>203</td>
+                        <td>Expired</td>
+                    </tr>
+                    <tr>
+                        <td>10 Nov 2022</td>
+                        <td>Diwali Special</td>
+                        <td class="photo-cell"><img class="contest-photo" src="https://via.placeholder.com/100?text=Diwali" alt="Contest Photo"></td>
+                        <td>#24</td>
+                        <td>156</td>
+                        <td>Expired</td>
+                    </tr>
+                    <tr>
+                        <td>25 Aug 2022</td>
+                        <td>Independence Day</td>
+                        <td class="photo-cell"><img class="contest-photo" src="https://via.placeholder.com/100?text=Independence" alt="Contest Photo"></td>
+                        <td>#8</td>
+                        <td>312</td>
+                        <td>Expired</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Participation Modal -->
+    <div id="participationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>New Participation</h2>
+            <p>Upload a new photo for the contest participation</p>
+            
+            <div class="upload-area" id="uploadArea">
+                <p>Click to browse or drag & drop photo here</p>
+                <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+            </div>
+            
+            <div id="uploadPreview" style="display: none; text-align: center;">
+                <img id="previewImage" src="#" alt="Preview" style="max-width: 300px; max-height: 300px; margin-bottom: 15px;">
+            </div>
+            
+            <div class="payment-section" id="paymentSection" style="display: none;">
+                <h3>Participation Fee: ₹299</h3>
+                <p>Pay the participation fee to generate your voting link</p>
+                <button class="payment-btn" id="payNowBtn">Pay Now</button>
+            </div>
+            
+            <div id="successSection" style="display: none; text-align: center;">
+                <h3 style="color: #4CAF50;">Participation Successful!</h3>
+                <div class="voting-link">
+                    <strong>Your Voting Link:</strong> 
+                    <span id="newVoteLink"></span>
+                    <button class="copy-btn" onclick="copyNewLink()">Copy</button>
+                </div>
+                <p>This link will be valid for 7 days. Share it with friends and family to get votes!</p>
+                <p>Voters will need to authenticate with their email (1 vote per email).</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById("participationModal");
+        const btn = document.getElementById("participateBtn");
+        const span = document.getElementsByClassName("close-btn")[0];
+        const uploadArea = document.getElementById("uploadArea");
+        const fileInput = document.getElementById("photoUpload");
+        const preview = document.getElementById("uploadPreview");
+        const previewImage = document.getElementById("previewImage");
+        const paymentSection = document.getElementById("paymentSection");
+        const successSection = document.getElementById("successSection");
+        const payNowBtn = document.getElementById("payNowBtn");
+        const currentParticipation = document.getElementById("currentParticipation");
+        const noCurrentParticipation = document.getElementById("noCurrentParticipation");
+        const voteLink = document.getElementById("voteLink");
+        const newVoteLink = document.getElementById("newVoteLink");
+        const currentContestPhoto = document.getElementById("currentContestPhoto");
+        const voteCount = document.getElementById("voteCount");
+        const countdown = document.getElementById("countdown");
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+            resetModal();
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                resetModal();
+            }
+        }
+
+        uploadArea.addEventListener("click", function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function() {
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    uploadArea.style.display = "none";
+                    preview.style.display = "block";
+                    paymentSection.style.display = "block";
+                }
+                
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+
+        payNowBtn.addEventListener("click", function() {
+            // Simulate payment processing
+            payNowBtn.textContent = "Processing...";
+            
+            setTimeout(function() {
+                paymentSection.style.display = "none";
+                successSection.style.display = "block";
+                
+                // Generate a random voting link
+                const randomId = Math.random().toString(36).substring(2, 8);
+                const newLink = `https://kidscontest.com/vote/rahul-${randomId}`;
+                newVoteLink.textContent = newLink;
+                
+                // Update the current participation section
+                currentParticipation.style.display = "block";
+                noCurrentParticipation.style.display = "none";
+                voteLink.textContent = newLink;
+                currentContestPhoto.src = previewImage.src;
+                voteCount.textContent = "0";
+                
+                // Set countdown timer (7 days)
+                const endDate = new Date();
+                endDate.setDate(endDate.getDate() + 7);
+                updateCountdown(endDate);
+                
+                // Update countdown every second
+                setInterval(function() {
+                    updateCountdown(endDate);
+                }, 1000);
+            }, 2000);
+        });
+
+        function resetModal() {
+            uploadArea.style.display = "block";
+            preview.style.display = "none";
+            paymentSection.style.display = "none";
+            successSection.style.display = "none";
+            fileInput.value = "";
+            payNowBtn.textContent = "Pay Now";
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(voteLink.textContent);
+            alert("Link copied to clipboard!");
+        }
+
+        function copyNewLink() {
+            navigator.clipboard.writeText(newVoteLink.textContent);
+            alert("Link copied to clipboard!");
+        }
+
+        function updateCountdown(endDate) {
+            const now = new Date();
+            const diff = endDate - now;
+            
+            if (diff <= 0) {
+                countdown.textContent = "Voting ended";
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            countdown.textContent = `${days} days ${hours} hours ${minutes} minutes`;
+        }
+    </script>
+</body>
+</html>
